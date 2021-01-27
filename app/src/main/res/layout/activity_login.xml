@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="0dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/imageViewLogo_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_contactos" />
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:autofillHints=""
+        android:drawableStart="@drawable/ic_baseline_account_circle_24"
+        android:drawablePadding="4dp"
+        android:ems="10"
+        android:hint="@string/editTextTextEmailAddress_hint"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewLogo"
+        app:layout_constraintHorizontal_bias="0.015"
+        app:layout_constraintStart_toStartOf="@+id/imageViewLogo"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+        android:drawableLeft="@drawable/ic_baseline_account_circle_24" />
+
+    <EditText
+        android:id="@+id/editTextTextPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:autofillHints=""
+        android:drawableStart="@drawable/ic_baseline_vpn_key_24"
+        android:drawablePadding="4dp"
+        android:ems="10"
+        android:hint="@string/editTextPassword_hint"
+        android:inputType="textPassword"
+        android:maxLength="15"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress"
+        android:drawableLeft="@drawable/ic_baseline_vpn_key_24" />
+
+    <CheckBox
+        android:id="@+id/checkBoxRecordarme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/checkBoxRecordarme_text"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonLogin_text"
+        app:layout_constraintEnd_toEndOf="@+id/checkBoxRecordarme"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxRecordarme"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxRecordarme" />
+
+    <TextView
+        android:id="@+id/textViewOlvidoContraseña"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/textViewOlvidoContraseña_texto"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+
+    <Button
+        android:id="@+id/buttonRegistrarse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/buttonRegistrarse_text"
+        app:layout_constraintEnd_toEndOf="@+id/textViewOlvidoContraseña"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewOlvidoContraseña"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOlvidoContraseña" />
+
+    <Button
+        android:id="@+id/buttonRegistrarseConGoogle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:drawableStart="@drawable/ic_google"
+        android:text="@string/buttonRegistrarseConGoogle_text"
+        app:layout_constraintEnd_toEndOf="@+id/buttonRegistrarse"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/buttonRegistrarse"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegistrarse"
+        android:drawableLeft="@drawable/ic_google" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

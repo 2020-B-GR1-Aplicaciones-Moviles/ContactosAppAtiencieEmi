@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">ContactosApp</string>
+    <string name="app_name">Contacts App</string>
+    <string name="imageViewLogo_text">Contacts Logo</string>
+    <string name="editTextTextEmailAddress_hint">Input your email</string>
+    <string name="editTextPassword_hint">Input your password</string>
+    <string name="checkBoxRecordarme_text">Remember me</string>
+    <string name="buttonLogin_text">Login</string>
+    <string name="textViewOlvidoContraseña_texto"><u>Forgot your password?</u></string>
+    <string name="buttonRegistrarse_text">Sign Up</string>
+    <string name="buttonRegistrarseConGoogle_text">Sign Up with Google</string>
+    <string name="email_NoValido">email not valid</string>
+    <string name="password_longitudNoValida">Password must be at least 8 characters</string>
 </resources>
