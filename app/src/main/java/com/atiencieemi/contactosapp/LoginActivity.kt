@@ -20,23 +20,25 @@ class LoginActivity : AppCompatActivity() {
 
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
 
-        //Lectura de valores de archivos de preferencia si existen
-        editTextTextEmailAddress.setText ( sharedPref.getString(LOGIN_KEY,"") )
-        editTextTextPassword.setText ( sharedPref.getString(PASSWORD_KEY,"") )
-
-        //Inicizliacion de variables
+        //Inicialización de variables
         buttonLogin = findViewById<Button>(R.id.buttonLogin)
         editTextTextEmailAddress = findViewById<EditText>(R.id.editTextTextEmailAddress)
         editTextTextPassword = findViewById<EditText>(R.id.editTextTextPassword)
+        checkBoxRecordarme = findViewById<CheckBox>(R.id.checkBoxRecordarme)
+
+        //Lectura de valores de archivo de preferencias en caso que exitan
+        editTextTextEmailAddress.setText ( sharedPref.getString(LOGIN_KEY,"") )
+        editTextTextPassword.setText ( sharedPref.getString(PASSWORD_KEY,"") )
 
         buttonLogin.setOnClickListener {
             if (!ValidarDatos())
                 return@setOnClickListener
             if(checkBoxRecordarme.isChecked){
-                val editor = sharedPref.edit()
-                editor.putString(LOGIN_KEY,editTextTextEmailAddress.text.toString())
-                editor.putString(PASSWORD_KEY,editTextTextPassword.text.toString())
-                editor.commit()
+                sharedPref
+                    .edit()
+                    .putString(LOGIN_KEY,editTextTextEmailAddress.text.toString())
+                    .putString(PASSWORD_KEY,editTextTextPassword.text.toString())
+                    .apply()
             }
             else{
                 val editor = sharedPref.edit()
@@ -47,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     fun ValidarDatos(): Boolean {
+
         fun CharSequence?.isValidEmail() =
             !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
         if (editTextTextEmailAddress.text.isNullOrEmpty()) {
@@ -68,6 +71,11 @@ class LoginActivity : AppCompatActivity() {
             editTextTextPassword.setError(getString(R.string.password_longitudNoValida))
             editTextTextPassword.requestFocus()
             return false
+        }
+
+        // Activar el Checkbox
+        if (editTextTextEmailAddress.text.length != 0 && editTextTextPassword.text.length != 0){
+            checkBoxRecordarme.isChecked = true
         }
         return true
     }
