@@ -3,10 +3,16 @@ package com.atiencieemi.contactosapp
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Patterns
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class LoginActivity : AppCompatActivity() {
     lateinit var buttonLogin : Button
@@ -18,7 +24,24 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        //temporal escritura de datos memoria externa
+        EscribirDatosEnArchivoExterno()
+        LeerDatosEnArchivoExterno()
+
+        //temporal escritura de datos memoria interna
+        EscribirDatosEnArchivoInterno4()
+        LeerDatosEnArchivoInterno4()
+
+        val masterKeyAlias: String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        val sharedPreferences = EncryptedSharedPreferences.create(
+            "secret_shared_prefs",//filename
+            masterKeyAlias,
+            this,//context
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        //val sharedPref = getPreferences(Context.MODE_PRIVATE)
 
         //Inicialización de variables
         buttonLogin = findViewById<Button>(R.id.buttonLogin)
@@ -27,21 +50,27 @@ class LoginActivity : AppCompatActivity() {
         checkBoxRecordarme = findViewById<CheckBox>(R.id.checkBoxRecordarme)
 
         //Lectura de valores de archivo de preferencias en caso que exitan
-        editTextTextEmailAddress.setText ( sharedPref.getString(LOGIN_KEY,"") )
-        editTextTextPassword.setText ( sharedPref.getString(PASSWORD_KEY,"") )
+        editTextTextEmailAddress.setText ( sharedPreferences.getString(LOGIN_KEY,"") )
+        editTextTextPassword.setText ( sharedPreferences.getString(PASSWORD_KEY,"") )
 
         buttonLogin.setOnClickListener {
             if (!ValidarDatos())
                 return@setOnClickListener
             if(checkBoxRecordarme.isChecked){
-                sharedPref
+                /*sharedPref
+                    .edit()
+                    .putString(LOGIN_KEY,editTextTextEmailAddress.text.toString())
+                    .putString(PASSWORD_KEY,editTextTextPassword.text.toString())
+                    .apply()*/
+
+                sharedPreferences
                     .edit()
                     .putString(LOGIN_KEY,editTextTextEmailAddress.text.toString())
                     .putString(PASSWORD_KEY,editTextTextPassword.text.toString())
                     .apply()
             }
             else{
-                val editor = sharedPref.edit()
+                val editor = sharedPreferences.edit()
                 editor.putString(LOGIN_KEY,"")
                 editor.putString(PASSWORD_KEY,"")
                 editor.commit()
@@ -79,4 +108,50 @@ class LoginActivity : AppCompatActivity() {
         }
         return true
     }
+
+    fun EscribirDatosEnArchivoInterno4(){
+        val texto = "texto" + System.lineSeparator() + "almacenado"
+        openFileOutput("fichero.txt", Context.MODE_PRIVATE).bufferedWriter().use {fos ->
+            fos.write(texto)
+        }
+    }
+
+    fun LeerDatosEnArchivoInterno4() {
+        openFileInput("fichero.txt").bufferedReader().use {
+            val datoLeido = it.readText()
+            val textArray = datoLeido.split("\n")
+            val texto1 = textArray[0]
+            val texto2 = textArray[1]
+        }
+    }
+
+    fun isExternalStorageWritable(): Boolean {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+    }
+    fun isExternalStorageReadable(): Boolean {
+        return Environment.getExternalStorageState() in
+                setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
+    }
+
+    fun EscribirDatosEnArchivoExterno(){
+        if (isExternalStorageWritable()) {
+            FileOutputStream(File(getExternalFilesDir(null),CONTACTS_FILENAME)).bufferedWriter().use { outputStream ->
+                outputStream.write("dato1")
+                outputStream.write(System.lineSeparator())
+                outputStream.write("dato2")
+            }
+        }
+    }
+
+    fun LeerDatosEnArchivoExterno(){
+        if (isExternalStorageReadable()) {
+            FileInputStream(File(getExternalFilesDir(null),CONTACTS_FILENAME)).bufferedReader().use {
+                val datoLeido = it.readText()
+                val textArray = datoLeido.split(System.lineSeparator())
+                val texto1 = textArray[0]
+                val texto2 = textArray[1]
+            }
+        }
+    }
+
 }
