@@ -1,6 +1,7 @@
 package com.atiencieemi.contactosapp
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -54,6 +55,15 @@ class LoginActivity : AppCompatActivity() {
         editTextTextPassword.setText ( sharedPreferences.getString(PASSWORD_KEY,"") )
 
         buttonLogin.setOnClickListener {
+            if(editTextTextEmailAddress.text.toString().equals("emi.atiencie@epn.edu.ec") and editTextTextPassword.text.toString().equals("12345678")){
+                var intent = Intent(this,PrincipalActivity::class.java)
+                intent.putExtra(LOGIN_KEY,editTextTextEmailAddress.text.toString())
+                startActivity(intent)
+                finish()
+            }
+
+
+
             if (!ValidarDatos())
                 return@setOnClickListener
             if(checkBoxRecordarme.isChecked){
