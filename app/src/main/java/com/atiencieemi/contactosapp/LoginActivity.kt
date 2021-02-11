@@ -20,6 +20,8 @@ class LoginActivity : AppCompatActivity() {
     lateinit var editTextTextEmailAddress : EditText
     lateinit var editTextTextPassword : EditText
     lateinit var checkBoxRecordarme : CheckBox
+    var login : String? = null
+    var password : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +53,15 @@ class LoginActivity : AppCompatActivity() {
         checkBoxRecordarme = findViewById<CheckBox>(R.id.checkBoxRecordarme)
 
         //Lectura de valores de archivo de preferencias en caso que exitan
-        editTextTextEmailAddress.setText ( sharedPreferences.getString(LOGIN_KEY,"") )
-        editTextTextPassword.setText ( sharedPreferences.getString(PASSWORD_KEY,"") )
+        login = sharedPreferences.getString(LOGIN_KEY,"").toString()
+        password = sharedPreferences.getString(PASSWORD_KEY,"").toString()
+        editTextTextEmailAddress.setText ( login )
+        editTextTextPassword.setText ( password )
 
         buttonLogin.setOnClickListener {
-            if(editTextTextEmailAddress.text.toString().equals("emi.atiencie@epn.edu.ec") and editTextTextPassword.text.toString().equals("12345678")){
+            if(login.toString().equals("emi.atiencie@epn.edu.ec") and password.toString().equals("12345678")){
                 var intent = Intent(this,PrincipalActivity::class.java)
-                intent.putExtra(LOGIN_KEY,editTextTextEmailAddress.text.toString())
+                intent.putExtra(LOGIN_KEY,login.toString())
                 startActivity(intent)
                 finish()
             }

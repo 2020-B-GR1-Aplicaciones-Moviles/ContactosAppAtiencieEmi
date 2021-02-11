@@ -10,4 +10,13 @@
     <string name="buttonRegistrarseConGoogle_text">Sign Up with Google</string>
     <string name="email_NoValido">email not valid</string>
     <string name="password_longitudNoValida">Password must be at least 8 characters</string>
+    <string name="textViewUserId_texto">Codigo:</string>
+    <string name="textViewFirstName_texto">Nombre:</string>
+    <string name="textViewLastName_texto">Apellido:</string>
+    <string name="textViewPhoneNumber_texto" translatable="false">Numero de Telefono:</string>
+    <string name="textViewEmailAddress_texto">Correo Electronico:</string>
+    <string name="buttonSave_texto">Guardar</string>
+    <string name="buttonView_texto">Buscar</string>
+    <string name="buttonUpdate_texto">Actualizar</string>
+    <string name="buttonDelete_texto">Borrar</string>
 </resources>
