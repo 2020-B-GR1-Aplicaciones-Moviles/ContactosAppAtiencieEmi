@@ -4,8 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.provider.BaseColumns
 import com.atiencieemi.contactosapp.ContactoModelClass
+import java.util.ArrayList
 
 class ContactDbHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -66,9 +66,8 @@ class ContactDbHelper(context: Context) :
         return newRowId!!.toInt()
     }
 
-    fun readAllContacts(): MutableList<ContactoModelClass> {
+    fun readAllContacts(): ArrayList<ContactoModelClass> {
         val db = this.readableDatabase
-
 // Define a projection that specifies which columns from the database
 // you will actually use after this query.
         val projection = arrayOf(
@@ -92,7 +91,7 @@ class ContactDbHelper(context: Context) :
             sortOrder               // The sort order
         )
 
-        val contacts = mutableListOf<ContactoModelClass>()
+        val contacts = arrayListOf<ContactoModelClass>()
         with(cursor) {
             while (moveToNext()) {
                 val userId = getInt(getColumnIndexOrThrow(COLUMN_NAME_USERID))
@@ -115,7 +114,7 @@ class ContactDbHelper(context: Context) :
         return contacts
     }
 
-    fun updateContacts(contact: ContactoModelClass): Int {
+    fun updateContact(contact: ContactoModelClass): Int {
         val db = this.writableDatabase
 
 // New value for one column
@@ -140,15 +139,14 @@ class ContactDbHelper(context: Context) :
         return count
     }
 
-    fun deleteContacts(contact: ContactoModelClass): Int {
+    fun deleteContact(userId: Int): Int {
         val db = this.writableDatabase
         // Define 'where' part of query.
         val selection = "${COLUMN_NAME_USERID} LIKE ?"
 // Specify arguments in placeholder order.
-        val selectionArgs = arrayOf("MyTitle")
+        val selectionArgs = arrayOf(userId.toString())
 // Issue SQL statement.
         val deletedRows = db.delete(TABLE_NAME, selection, selectionArgs)
-
         return deletedRows
     }
 }
