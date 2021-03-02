@@ -1,28 +1,37 @@
 package com.atiencieemi.contactosapp
 
+import android.Manifest
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.atiencieemi.contactosapp.database.ContactDbHelper
 
 class PrincipalActivity : AppCompatActivity() {
     var contactos = arrayListOf<ContactoModelClass>()
     var selectedContactPosition = 0
-    lateinit var listViewContacts : ListView
-    lateinit var editTextUserId : EditText
-    lateinit var editTextFirstName : EditText
-    lateinit var editTextLastName : EditText
-    lateinit var editTextPhoneNumber : EditText
-    lateinit var editTextEmailAddress : EditText
-    lateinit var buttonSave : Button
-    lateinit var buttonView : Button
-    lateinit var buttonUpdate : Button
-    lateinit var buttonDelete : Button
+    lateinit var listViewContacts: ListView
+    lateinit var editTextUserId: EditText
+    lateinit var editTextFirstName: EditText
+    lateinit var editTextLastName: EditText
+    lateinit var editTextPhoneNumber: EditText
+    lateinit var editTextEmailAddress: EditText
+    lateinit var buttonSave: Button
+    lateinit var buttonView: Button
+    lateinit var buttonUpdate: Button
+    lateinit var buttonDelete: Button
+    lateinit var buttonCall: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +49,7 @@ class PrincipalActivity : AppCompatActivity() {
         buttonView = findViewById(R.id.buttonView)
         buttonUpdate = findViewById(R.id.buttonUpdate)
         buttonDelete = findViewById(R.id.buttonDelete)
+        buttonCall = findViewById(R.id.buttonCall)
 
         val username = intent.getStringExtra(LOGIN_KEY) ?: ""
         // Get the support action bar
@@ -72,12 +82,20 @@ class PrincipalActivity : AppCompatActivity() {
             val telefono = editTextPhoneNumber.text.toString()
             val email = editTextEmailAddress.text.toString()
             //contactos.add(ContactoModelClass(id,nombre,apellido,telefono, email))
-            val respuesta = ContactDbHelper(this).createContact(ContactoModelClass(id,nombre,apellido,telefono, email))
+            val respuesta = ContactDbHelper(this).createContact(
+                ContactoModelClass(
+                    id,
+                    nombre,
+                    apellido,
+                    telefono,
+                    email
+                )
+            )
 
-            if (respuesta == -1){
-                Toast.makeText(this,"Error al añadir contacto",Toast.LENGTH_LONG).show()
-            }else{
-                Toast.makeText(this,"Contacto añadido",Toast.LENGTH_LONG).show()
+            if (respuesta == -1) {
+                Toast.makeText(this, "Error al añadir contacto", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Contacto añadido", Toast.LENGTH_LONG).show()
             }
             consultarContactos()
         }
@@ -99,12 +117,19 @@ class PrincipalActivity : AppCompatActivity() {
             val apellido = editTextLastName.text.toString()
             val telefono = editTextPhoneNumber.text.toString()
             val email = editTextEmailAddress.text.toString()
-            val respuesta = ContactDbHelper(this).updateContact(ContactoModelClass(id,nombre,apellido,telefono, email))
-            if(respuesta == -1) {
-                Toast.makeText(this,"Error al actualizar el contacto", Toast.LENGTH_LONG).show()
-            }
-            else{
-                Toast.makeText(this,"Contacto actualizado exitosamente", Toast.LENGTH_LONG).show()
+            val respuesta = ContactDbHelper(this).updateContact(
+                ContactoModelClass(
+                    id,
+                    nombre,
+                    apellido,
+                    telefono,
+                    email
+                )
+            )
+            if (respuesta == -1) {
+                Toast.makeText(this, "Error al actualizar el contacto", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Contacto actualizado exitosamente", Toast.LENGTH_LONG).show()
             }
             consultarContactos()
         }
@@ -118,18 +143,28 @@ class PrincipalActivity : AppCompatActivity() {
                 //contactos.removeAt(selectedContactPosition)
                 val userId = editTextUserId.text.toString().toInt()
                 val filasBorradas = ContactDbHelper(this).deleteContact(userId)
-                if(filasBorradas == 0) {
-                    Toast.makeText(this,"Error al eliminar el contacto", Toast.LENGTH_LONG).show()
-                }
-                else{
-                    Toast.makeText(this,"Contacto eliminado exitosamente", Toast.LENGTH_LONG).show()
+                if (filasBorradas == 0) {
+                    Toast.makeText(this, "Error al eliminar el contacto", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, "Contacto eliminado exitosamente", Toast.LENGTH_LONG)
+                        .show()
                 }
                 consultarContactos()
             })
-            dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
-                //pass
-            })
+            dialogBuilder.setNegativeButton(
+                "Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    //pass
+                })
             dialogBuilder.create().show()
+        }
+
+        buttonCall.setOnClickListener {
+            /*val number = "0992342567"
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = Uri.parse("tel:$number")
+            startActivity(intent)*/
+            makeCall()
         }
     }
 
@@ -141,11 +176,67 @@ class PrincipalActivity : AppCompatActivity() {
         editTextEmailAddress.setText("")
     }
 
-    fun consultarContactos(){
+    fun consultarContactos() {
         contactos = ContactDbHelper(this).readAllContacts()
-        val contactoAdapter= ContactoAdapter(this, contactos)
+        val contactoAdapter = ContactoAdapter(this, contactos)
         listViewContacts.adapter = contactoAdapter
         limpiarCamposEditables()
     }
 
+    fun makeCall() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = Uri.parse("tel:" + "0992342567")
+            startActivity(intent)
+        } else {
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = Uri.parse("tel:" + "0992342567")
+            val result = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+            if (result == PackageManager.PERMISSION_GRANTED) {
+                startActivity(intent)
+            } else {
+                requestForCallPermission()
+            }
+        }
+    }
+
+    private fun requestForCallPermission() =
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.CALL_PHONE
+            )
+        ) {
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CALL_PHONE),
+                PERMISSION_REQUEST_CODE
+            )
+        }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "Permission for call was granted!", Toast.LENGTH_SHORT)
+                        .show();
+                    makeCall()
+                } else {
+                    Toast.makeText(this, "Permission for call was denied!", Toast.LENGTH_SHORT)
+                        .show();
+                }
+                return
+            }
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
 }

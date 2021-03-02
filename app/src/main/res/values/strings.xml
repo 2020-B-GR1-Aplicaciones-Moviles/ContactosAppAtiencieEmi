@@ -15,8 +15,9 @@
     <string name="textViewLastName_texto">Apellido:</string>
     <string name="textViewPhoneNumber_texto" translatable="false">Numero de Telefono:</string>
     <string name="textViewEmailAddress_texto">Correo Electronico:</string>
-    <string name="buttonSave_texto">Guardar</string>
-    <string name="buttonView_texto">Buscar</string>
-    <string name="buttonUpdate_texto">Actualizar</string>
-    <string name="buttonDelete_texto">Borrar</string>
+    <string name="buttonSave_texto">Save</string>
+    <string name="buttonView_texto">View</string>
+    <string name="buttonUpdate_texto">Update</string>
+    <string name="buttonDelete_texto">Delete</string>
+    <string name="buttonCall_texto">Call</string>
 </resources>

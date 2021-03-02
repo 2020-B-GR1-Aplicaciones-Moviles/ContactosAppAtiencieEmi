@@ -135,13 +135,13 @@
 
         <Button
             android:id="@+id/buttonSave"
-            android:layout_width="wrap_content"
+            android:layout_width="73dp"
             android:layout_height="wrap_content"
             android:text="@string/buttonSave_texto" />
 
         <Button
             android:id="@+id/buttonView"
-            android:layout_width="wrap_content"
+            android:layout_width="77dp"
             android:layout_height="wrap_content"
             android:text="@string/buttonView_texto" />
 
@@ -156,6 +156,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/buttonDelete_texto" />
+
+        <Button
+            android:id="@+id/buttonCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickEnviar"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_baseline_phone_forwarded_24" />
+            android:text="" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
