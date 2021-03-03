@@ -161,7 +161,6 @@
             android:id="@+id/buttonCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClickEnviar"
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_baseline_phone_forwarded_24" />
             android:text="" />
